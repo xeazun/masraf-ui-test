@@ -22,15 +22,6 @@ public class CommonConstant {
     public final String modalCloseButtonXpath = "//button[@class='button close']";
     public final String modalSaveButtonXpath = "//button[@id='inputDefault']";
 
-    //DETAİL
-    public final String showFourRecordButtonXpath = "//tr[4]//button[@class='btn btn-sm btn-info m-1']";
-    public final String showFiveRecordButtonXpath = "//tr[5]//button[@class='btn btn-sm btn-info m-1']";
-    public final String showSevenRecordFirstButtonXpath = "//tr[7]//button[@class='btn btn-sm btn-info m-1']"; // 7 değişkene cevir.
-    public final String showSevenRecordLastButtonXpath = "";
-    public final String showEighthRecordButtonXpath = "//tr[8]//button[@class='btn btn-sm btn-info m-1']";
-    public final String showSeventeenRecordButtonXpath = "//tr[17]//button[@class='btn btn-sm btn-info m-1']";
-    public final String showEighteenRecordButtonXpath = "//tr[18]//button[@class='btn btn-sm btn-info m-1']";
-    public final String showNineteenRecordButtonXpath = "//tr[19]//button[@class='btn btn-sm btn-info m-1']";
     //NOTIFICATION
     public final String notificationCloseButtonXpath = "//div[@class='modal-body']//div[1]/button[.='X']";
     public final String notificationSuccessStateTextXpath = "//p[.='İşlem Başarılı']";
