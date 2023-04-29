@@ -20,7 +20,7 @@ public class MasrafUITests {
     private CommonConstant _commonConstant;
     private UserConstant _userConstant;
     private UITestService _uiTestService;
-    int durationTime = 20;
+    int durationTime = 50;
 
     String paymentName = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 5);
     String paymentCode = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 3);
@@ -53,7 +53,7 @@ public class MasrafUITests {
     void ManageUserTest() {
         _uiTestService.FindElementClick(_adminConstant.userToManageSectionXpath, durationTime);
         _uiTestService.UserNewRecord("ezgi.admin@nttdata.com", "ezgi.admin@nttdata.com", "Ezgi", "Azun", durationTime);
-        _uiTestService.Notification(durationTime);
+        _uiTestService.AdminAndUserNotification(durationTime);
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath, durationTime);
     }
 
@@ -61,7 +61,7 @@ public class MasrafUITests {
     void PaymentMethodTest() {
         _uiTestService.FindElementClick(_adminConstant.paymentSectionXpath, durationTime);
         _uiTestService.NewRecord(paymentName, paymentCode, durationTime);
-        _uiTestService.Notification(durationTime);
+        _uiTestService.AdminAndUserNotification(durationTime);
         _uiTestService.DetailSection(durationTime,1);
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath, durationTime);
     }
@@ -70,7 +70,7 @@ public class MasrafUITests {
     void CostCenterTest() {
         _uiTestService.FindElementClick(_adminConstant.costCenterSectionXpath, durationTime);
         _uiTestService.NewRecord(costName, costCode, durationTime);
-        _uiTestService.Notification(durationTime);
+        _uiTestService.AdminAndUserNotification(durationTime);
         _uiTestService.DetailSection(durationTime,1);
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath, durationTime);
     }
@@ -79,7 +79,7 @@ public class MasrafUITests {
     void CurrencyTest() {
         _uiTestService.FindElementClick(_adminConstant.currencySectionXpath, durationTime);
         _uiTestService.NewRecord(currencyName, currencyCode, durationTime);
-        _uiTestService.Notification(durationTime);
+        _uiTestService.AdminAndUserNotification(durationTime);
         _uiTestService.DetailSection(durationTime,1);
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath, durationTime);
     }
@@ -95,7 +95,7 @@ public class MasrafUITests {
     }
 
     @Test(priority = 8)
-    void AddAVoucherTest() throws InterruptedException {
+    void AddAVoucherTest(){
 
         for (int i = 1; i <= 3; i++) {
             Random random = new Random();
@@ -134,10 +134,8 @@ public class MasrafUITests {
             _uiTestService.FindElementWrite(_userConstant.documentIssuedDateFieldXpath, formattedDate,durationTime);
             _uiTestService.FindElementWrite(_userConstant.documentDescriptionFieldXpath, description,durationTime);
             _uiTestService.DocumentImageFileField();
-
             _uiTestService.FindElementClick(_commonConstant.modalSaveButtonXpath, durationTime);
-
-            _uiTestService.Notification(durationTime);
+            _uiTestService.AdminAndUserNotification(durationTime);
         }
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath, durationTime);
     }
@@ -161,19 +159,16 @@ public class MasrafUITests {
 
         _uiTestService.DetailSection(durationTime,3);
         _uiTestService.DocumentApproveButton(durationTime);
-        _uiTestService.NotificationApprover(durationTime);
 
-       // Thread.sleep(1000);
+        _uiTestService.ApproverNotification(durationTime);
 
         _uiTestService.DetailSection(durationTime,2);
         _uiTestService.DocumentApproveButton(durationTime);
-        _uiTestService.NotificationApproverTwo(durationTime);
-
-        //Thread.sleep(1000);
+        _uiTestService.ApproverAndUserNotification(durationTime);
 
         _uiTestService.DetailSection(durationTime,1);
         _uiTestService.DocumentRejectButton(durationTime);
-        _uiTestService.NotificationApprover(durationTime);
+        _uiTestService.ApproverNotification(durationTime);
 
         _uiTestService.ScrollBarUp(durationTime);
 
@@ -192,9 +187,9 @@ public class MasrafUITests {
     }
 
     @Test(priority = 14)
-    void FormCreationTest() throws InterruptedException {
+    void FormCreationTest(){
 
-        _uiTestService.FindElementClick(_commonConstant.formSectionXpath,durationTime);
+        _uiTestService.FindElementClick(_commonConstant.formSectionXpath, durationTime);
 
         _uiTestService.FindElementClick(_commonConstant.createRecordXpath,durationTime);
 
@@ -204,15 +199,19 @@ public class MasrafUITests {
 
         _uiTestService.FindElementClick(_commonConstant.modalSaveButtonXpath,durationTime);
 
-        _uiTestService.Notification(durationTime);
+        _uiTestService.AdminAndUserNotification(durationTime);
 
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath,durationTime);
 
         _uiTestService.DetailSection(durationTime,1);
-
         _uiTestService.FindElementClick(_userConstant.addDocumentToFormButtonXpath,durationTime);
+        _uiTestService.DocumentDropDown(_userConstant.formDocumentDropdownXpath, durationTime,2);
+        _uiTestService.ApproverNotification(durationTime);
 
-        _uiTestService.DocumentDropDown(_userConstant.formDocumentDropdownXpath, durationTime);
+        _uiTestService.DetailSection(durationTime,1);
+        _uiTestService.FindElementClick(_userConstant.addDocumentToFormButtonXpath,durationTime);
+        _uiTestService.DocumentDropDown(_userConstant.formDocumentDropdownXpath, durationTime,2);
+        _uiTestService.ApproverNotification(durationTime);
 
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath,durationTime);
 
@@ -222,9 +221,11 @@ public class MasrafUITests {
 
         _uiTestService.FindElementClick(_commonConstant.modalCloseButtonXpath,durationTime);
 
-        // _uiTestService.Logout(durationTime);
     }
-
+    @Test(priority = 15)
+    void UserFormLogoutTest(){
+    // _uiTestService.Logout(durationTime);
+    }
     @AfterEach
     void tearDown() throws InterruptedException {
 //        Thread.sleep(1500);

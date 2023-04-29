@@ -4,16 +4,13 @@ import constants.AdminConstant;
 import constants.ApproverConstant;
 import constants.CommonConstant;
 import constants.UserConstant;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class UITestService {
     WebDriver driver;
@@ -30,26 +27,26 @@ public class UITestService {
         _approverConstant = new ApproverConstant();
     }
 
-    public void Login(String elementId, String email,int durationTime) {
+    public void Login(String elementId, String email, int durationTime) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginSectionButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.loginSectionButtonXpath)).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginSectionButtonXpath))).click();
+        // driver.findElement(By.xpath(_commonConstant.loginSectionButtonXpath)).click();
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(elementId)));
-        driver.findElement(By.xpath(elementId)).sendKeys(email);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(elementId))).sendKeys(email);
+        //  driver.findElement(By.xpath(elementId)).sendKeys(email);
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginPasswordFieldXpath)));
-        driver.findElement(By.xpath(_commonConstant.loginPasswordFieldXpath)).sendKeys("Password12.");
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginPasswordFieldXpath))).sendKeys("Password12.");
+        //  driver.findElement(By.xpath(_commonConstant.loginPasswordFieldXpath)).sendKeys("Password12.");
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.loginButtonXpath)).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.loginButtonXpath))).click();
+        //  driver.findElement(By.xpath(_commonConstant.loginButtonXpath)).click();
     }
 
     public void FindElementClick(String elementId, int durationTime) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId)));
-        driver.findElement(By.xpath(elementId)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId))).click();
+        //driver.findElement(By.xpath(elementId)).click();
     }
 
     public void FindElementWrite(String elementId, String generalText, int durationTime) {
@@ -74,57 +71,67 @@ public class UITestService {
         Thread.sleep(1000);
     }
 
-    public void Notification(int durationTime) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
+    public void AdminAndUserNotification(int durationTime) {
+        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationCloseButtonXpath))).click();
+        //driver.findElement(By.xpath(_commonConstant.notificationCloseButtonXpath)).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationCloseButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.notificationCloseButtonXpath)).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationSuccessStateTextXpath)));
-        WebElement notificationTrue = driver.findElement(By.xpath(_commonConstant.notificationSuccessStateTextXpath));
+        WebElement notificationTrue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationSuccessStateTextXpath)));
+        // driver.findElement(By.xpath(_commonConstant.notificationSuccessStateTextXpath));
         String notificationTrueText = notificationTrue.getText();
 
         System.out.println("Notification text: " + notificationTrueText);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationCloseButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.notificationCloseButtonXpath)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationCloseButtonXpath))).click();
+        // driver.findElement(By.xpath(_commonConstant.notificationCloseButtonXpath)).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath))).click();
+        // driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
     }
 
-    public void NotificationApprover(int durationTime){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationSuccessStateTextXpath)));
-        WebElement notificationTrue = driver.findElement(By.xpath(_commonConstant.notificationSuccessStateTextXpath));
+    public void ApproverNotification(int durationTime) {
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(durationTime))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoring(NoSuchElementException.class);
+        WebElement notificationTrue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationSuccessStateTextXpath)));
+       // WebElement notificationTrue = driver.findElement(By.xpath(_approverConstant.notificationSuccessStateTextXpath));
 
         String notificationTrueText = notificationTrue.getText();
         System.out.println("Notification text: " + notificationTrueText);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationCloseButton)));
-        driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_approverConstant.notificationCloseButton))).click();
+       // driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath))).click();
+        // driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
     }
-    public void NotificationApproverTwo(int durationTime) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationCloseButton)));
-        driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
+    public void ApproverAndUserNotification(int durationTime) {
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
+        Wait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(30))
+                .pollingEvery(Duration.ofSeconds(1))
+                .ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationCloseButton))).click();
+        // driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationSuccessStateTextXpath)));
-        WebElement notificationTrue = driver.findElement(By.xpath(_commonConstant.notificationSuccessStateTextXpath));
+        WebElement notificationTrue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationSuccessStateTextXpath)));
+        //driver.findElement(By.xpath(_approverConstant.notificationSuccessStateTextXpath));
 
         String notificationTrueText = notificationTrue.getText();
         System.out.println("Notification text: " + notificationTrueText);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationCloseButton)));
-        driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_approverConstant.notificationCloseButton))).click();
+        // driver.findElement(By.xpath(_approverConstant.notificationCloseButton)).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath)));
-        driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalCloseButtonXpath))).click();
+        // driver.findElement(By.xpath(_commonConstant.modalCloseButtonXpath)).click();
     }
 
     public void UserNewRecord(String adminName, String adminMail, String adminFirstName, String adminLastName, int durationTime) {
@@ -219,31 +226,24 @@ public class UITestService {
         selectCenter.selectByValue(lastOption.getAttribute("value"));
     }
 
-    public void DocumentDropDown(String elementId, int durationTime) {
-        for (int i = 2; i <= 3; i++) {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
+    public void DocumentDropDown(String elementId, int durationTime, int i) {
+        // for (int i = 2; i <= 3; i++) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(durationTime));
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId)));
-            driver.findElement(By.xpath(elementId)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId)));
+        driver.findElement(By.xpath(elementId)).click();
 
-            WebElement dropdownCenter = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId)));
-            Select selectCenter = new Select(dropdownCenter);
+        WebElement dropdownCenter = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementId)));
+        Select selectCenter = new Select(dropdownCenter);
 
-            List<WebElement> optionsCenter = selectCenter.getOptions();
-            WebElement lastOption = optionsCenter.get(optionsCenter.size() - i);
-            selectCenter.selectByValue(lastOption.getAttribute("value"));
+        List<WebElement> optionsCenter = selectCenter.getOptions();
+        WebElement lastOption = optionsCenter.get(optionsCenter.size() - i);
+        selectCenter.selectByValue(lastOption.getAttribute("value"));
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalSaveButtonXpath)));
-            driver.findElement(By.xpath(_commonConstant.modalSaveButtonXpath)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.modalSaveButtonXpath)));
+        driver.findElement(By.xpath(_commonConstant.modalSaveButtonXpath)).click();
 
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(_commonConstant.notificationSuccessStateTextXpath)));
-            WebElement notificationTrue = driver.findElement(By.xpath(_commonConstant.notificationSuccessStateTextXpath));
-
-            String notificationTrueText = notificationTrue.getText();
-            System.out.println("Notification text: " + notificationTrueText);
-
-            driver.findElement(By.xpath(_commonConstant.notificationCloseButtonXpath)).click();
-        }
+        //  }
     }
 
     public void DocumentImageFileField() {
